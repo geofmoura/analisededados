@@ -1,4 +1,4 @@
-# Efeitos do câmbio no comércio exterior.
+# O efeito da variação cambial sobre o comércio exterior brasileiro (exportações e importações).
 
 ## Objetivo
 -Investigar como a variação da taxa de câmbio (real/dólar) impacta os volumes e valores das exportações e importações do Brasil em determinado período.
