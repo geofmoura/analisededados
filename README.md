@@ -17,3 +17,9 @@
 -Correlação (heatmap ou scatterplot) entre variação do câmbio e variação nas exportações/importações. <br>
 -Comparação setorial: commodities agrícolas (soja, café, minério) vs produtos industrializados. <br>
 
+## O que seria mostrado
+
+-Séries históricas mostrando como o câmbio e o comércio exterior se comportaram em crises (ex.: 2008, 2015, pandemia 2020). <br>
+-A elasticidade (se exportações/importações respondem rápido ou devagar às variações cambiais). <br>
+-Diferença entre setores (commodities reagem mais ao câmbio do que manufaturados, por exemplo). <br>
+
