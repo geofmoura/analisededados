@@ -23,3 +23,13 @@
 -A elasticidade (se exportações/importações respondem rápido ou devagar às variações cambiais). <br>
 -Diferença entre setores (commodities reagem mais ao câmbio do que manufaturados, por exemplo). <br>
 
+## Conclusões possíveis
+
+-Confirmar (ou não) a hipótese clássica de que desvalorização cambial estimula exportações e valorização estimula importações. <br>
+-Mostrar que o efeito não é imediato (às vezes demora meses/anos para impactar). <br>
+
+#### Concluir que setores diferentes têm sensibilidades distintas ao câmbio:
+-Agronegócio: tende a se beneficiar com dólar alto. <br>
+-Indústria: pode perder competitividade se depende de importados (insumos encarecem). <br>
+-Consumo interno: pode sofrer quando dólar está caro (importados ficam caros). <br>
+
