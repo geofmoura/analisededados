@@ -15,9 +15,10 @@ def process_exchange_data():
 
     grouped = df.groupby(['ano', 'mes'])['valor'].mean().reset_index()
     
-    return grouped
+    return df   
 
 
 if __name__ == "__main__":
     data = process_exchange_data()
+    data.to_excel('data/excahnge.xlsx', index=False)
     print(data)
