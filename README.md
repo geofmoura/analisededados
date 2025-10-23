@@ -33,3 +33,9 @@
 -Indústria: pode perder competitividade se depende de importados (insumos encarecem). <br>
 -Consumo interno: pode sofrer quando dólar está caro (importados ficam caros). <br>
 
+
+## Consultas
+
+- **Importações**: [comexstat.mdic.gov.br/importacao](https://comexstat.mdic.gov.br/pt/geral/137007)
+- **Exportações**: [comexstat.mdic.gov.br/exportacao](https://comexstat.mdic.gov.br/pt/geral/137008)
+- **Taxa de Câmbio**: [api.bcb.gov.br/cambio](https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados?formato=json&dataInicial=04/10/2014&dataFinal=04/10/2024)
