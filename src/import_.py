@@ -1,18 +1,44 @@
 import pandas as pd
+import glob
+import os
 
 def process_import_data():
 
-    df = pd.read_csv('data/import.csv', sep=';')
+    df = merge_csv_files()
     
-    grouped = df.groupby(['Ano', 'Mês'])['Valor US$ FOB'].mean().reset_index()
+    grouped = df.groupby(['Ano', 'Mês', 'Fluxo', 'Descrição ISIC Seção'])['Valor US$ FOB'].mean().reset_index()
     grouped = grouped.rename(columns={
         'Valor US$ FOB': 'valor',
         'Ano': 'ano',
         'Mês': 'mes'
     })
+    
+    grouped['mes'] = grouped['mes'].apply(lambda a : a.split('.')[0]) 
+    
+    grouped['data'] = pd.to_datetime(
+        grouped['ano'].astype(str) + '/' + grouped['mes'].astype(str) + '/01',
+        errors='coerce'
+    )
+    grouped = grouped.drop(['ano', 'mes'], axis=1)
+    
+    cols = ['data'] + [col for col in grouped.columns if col != 'data']
+    grouped = grouped.reindex(columns=cols)
+    
     return grouped
 
 
+def merge_csv_files(directory='data'):
+    # Lista todos os arquivos CSV da pasta especificada
+    csv_files = glob.glob(os.path.join(directory, '*.csv'))
+    dataframes = []
+    for file in csv_files:
+        df = pd.read_csv(file, sep=';')
+        dataframes.append(df)
+    # Concatena todos os DataFrames em um único
+    merged_df = pd.concat(dataframes, ignore_index=True)
+    return merged_df
+
 if __name__ == "__main__":
     data = process_import_data()
+    data.to_excel('./data/report.xlsx', index=False, sheet_name='comexstat')
     print(data)
