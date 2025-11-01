@@ -1,41 +1,31 @@
-import plotly.graph_objects as go
-import streamlit as st
-from src.exchange import process_exchange_data, months
-from src.import_ import process_import_data
+import sys
+import time
+from src.comexstat import process_comex_data
+from src.exchange import process_exchange_data
+import os
+from loguru import logger
 
-st.title('Análise e Cambio / importações e importações')
+start_time = time.time()
+logger.remove()
+logger.add(sys.stdout, level="DEBUG", format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level}</level> | <level>{message}</level>", colorize=True, enqueue=True)
+logger.info("Algoritimo Iniciado")
 
-df1 = process_exchange_data()
-df2 = process_import_data()
+os.makedirs('data', exist_ok=True)
+comex = process_comex_data()
+exchange = process_exchange_data()
 
-grafico_df = df1[['mes', 'valor']].copy()
-grafico_df = grafico_df.rename(columns={'valor': 'exchange_valor'})
-grafico_df['import_valor'] = df2['valor'].values
+logger.debug(f"DataFrame 'comex' processado com {len(comex)} linhas e {len(comex.columns)} colunas.")
+logger.debug(f"DataFrame 'exchange' processado com {len(exchange)} linhas e {len(exchange.columns)} colunas.")
 
-grafico_df['mes_num'] = grafico_df['mes'].apply(lambda x: months.index(x) + 1)
-grafico_df = grafico_df.sort_values('mes_num')
+logger.info("Salvando arquivo excel com os dados do ComexStat")
+comex.to_excel('data/comexstat.xlsx', index=False, sheet_name='comexstat')
 
-fig = go.Figure()
+logger.info("Salvando arquivo excel com os dados de Câmbio")
+exchange.to_excel('data/exchange.xlsx', index=False, sheet_name='excahnge')
 
-fig.add_trace(go.Scatter(
-    x=grafico_df['mes'],
-    y=grafico_df['exchange_valor'],
-    name='Câmbio',
-    yaxis='y1',
-))
+end_time = time.time()
+elapsed_time = end_time - start_time
 
-fig.add_trace(go.Scatter(
-    x=grafico_df['mes'],
-    y=grafico_df['import_valor'],
-    name='Importação',
-    yaxis='y2'
-))
+logger.success(f"Algoritmo Finalizado com sucesso em {elapsed_time:.2f} segundos")
 
-fig.update_layout(
-    yaxis=dict(title='Câmbio', showgrid=False),
-    yaxis2=dict(title='Importação', overlaying='y', side='right', showgrid=False),
-    xaxis=dict(title='Mês')
-)
-
-st.plotly_chart(fig)
 
