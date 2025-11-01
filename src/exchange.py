@@ -32,24 +32,18 @@ def fetch_exchange_data():
 
         response = requests.get(base_url, headers=headers, params=params)
 
-    if response.status_code == 200:
-        part_data = response.json()
-        all_data.extend(part_data)
-        print(f"Coletados {len(part_data)} registros de {start} a {end}.")
-    else:
-        print(f"Erro ao coletar dados de {start} a {end}: {response.status_code}")
-        return False
-
-    os.makedirs('data', exist_ok=True)
-
-    with open('data/exchange.json', 'w', encoding='utf-8') as f:
-        json.dump(all_data, f, ensure_ascii=False, indent=2)
+        if response.status_code == 200:
+            part_data = response.json()
+            all_data.extend(part_data)
+            print(f"Coletados {len(part_data)} registros de {start} a {end}.")
+        else:
+            print(f"Erro ao coletar dados de {start} a {end}: {response.status_code}")
+            return None
     
-    print("Dados combinados e salvos em 'data/exchange.json'.")
-    return True
+    return all_data
 
-def process_exchange_data():
-    df = pd.read_json('data/exchange.json', encoding='utf-8')
+def process_exchange_data(all_data):
+    df = pd.DataFrame(all_data)
     df['data'] = pd.to_datetime(df['data'], format='%d/%m/%Y')
     df['ano'] = df['data'].dt.year
     df['mes'] = df['data'].dt.month
@@ -62,11 +56,12 @@ def process_exchange_data():
 
 
 if __name__ == "__main__":
-    success = fetch_exchange_data()
+    data_json = fetch_exchange_data()
     
-    if success and os.path.exists('data/exchange.json'):
-        data = process_exchange_data()
+    if data_json:
+        data = process_exchange_data(data_json)
+        os.makedirs('data', exist_ok=True)
         data.to_excel('data/exchange.xlsx', index=False)
         print("Arquivo 'exchange.xlsx' criado com sucesso.")
     else:
-        print("A coleta falhou. Verifique a conexão ou o enereço da API.")
+            print("A coleta falhou. Verifique a conexão ou o endereço da API.")
