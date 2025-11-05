@@ -8,6 +8,7 @@ from loguru import logger
 start_time = time.time()
 logger.remove()
 logger.add(sys.stdout, level="DEBUG", format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level}</level> | <level>{message}</level>", colorize=True, enqueue=True)
+
 logger.info("Algoritimo Iniciado")
 
 os.makedirs('data', exist_ok=True)
