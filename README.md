@@ -1,5 +1,17 @@
 # Análise Estatística do Comércio Exterior no Brasil.
 
+<div align="center">
+
+## 📊 Apresentação dos Resultados
+
+[![Capa dos Slides](./docs/capa.png)](./docs/relatorio.md)
+
+**🎯 Clique na imagem acima para acessar o relatório completo**
+
+---
+
+</div>
+
 ## Objetivo
 A análise integrada entre as estatísticas do comércio exterior e a variação cambial busca compreender como as oscilações do câmbio influenciam o desempenho das exportações e importações brasileiras. Essa relação é essencial para apoiar empresas exportadoras na formulação de estratégias mais seguras diante da volatilidade do mercado internacional.  
 
