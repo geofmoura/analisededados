@@ -24,7 +24,7 @@ def get_pais_bloco_data():
     return bloco
 
 def get_exports_data():
-    logger.debug("Baixando dados e exportação")
+    logger.debug("Baixando dados de exportação")
     start_time = time.time()
     df = bd.read_sql(query = get_sql_query('exports'), billing_project_id = BINLLING_ID)
     end_time = time.time()
@@ -32,7 +32,7 @@ def get_exports_data():
     return df
     
 def get_imports_data():
-    logger.debug("Baixando dados e importação")
+    logger.debug("Baixando dados de importação")
     start_time = time.time()
     df = bd.read_sql(query = get_sql_query('imports'), billing_project_id = BINLLING_ID)
     end_time = time.time()
@@ -40,6 +40,7 @@ def get_imports_data():
     return df
 
 def process_comex_data():
+    logger.info("Iniciando processamento dos dados do Comexstat")
     ncm_isic = get_ncm_isic_data()
     pais_bloco = get_pais_bloco_data()
     exports = get_exports_data()

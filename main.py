@@ -22,7 +22,7 @@ logger.debug(f"DataFrame 'imports' processado com {len(imports)} linhas.")
 logger.debug(f"DataFrame 'exchange' processado com {len(exchange)} linhas")
 
 logger.info("Salvando dados do ComexStat no banco sqlite")
-connection = sqlite3.connect(':memory:')
+connection = sqlite3.connect('data/database.db')
 
 ncm_isic.to_sql('ncm_isic', connection, if_exists='replace', index=False)
 pais_bloco.to_sql('pais_bloco', connection, if_exists='replace', index=False)
