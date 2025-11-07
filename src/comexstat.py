@@ -1,50 +1,54 @@
-import pandas as pd 
-import glob
-import os
+from logging import getLevelName
+import basedosdados as bd
+import time
 from loguru import logger
+import pandas as pd
+from src.query import get_sql_query
+from src.utils import calculateTime, get_logger
+
+BINLLING_ID = 'taskplus-397900'
+
+def get_ncm_isic_data():
+    logger.debug("Carregando dados da tablea ncm_isic")
+    isic = pd.read_excel('data/NCM_ISIC.xlsx')
+    isic = isic[['CO_ISIC_CLASSE', 'NO_ISIC_SECAO']]
+    isic['CO_ISIC_CLASSE'] = isic['CO_ISIC_CLASSE'].apply(lambda a: str(a).zfill(4))
+    return isic
+
+def get_pais_bloco_data():
+    logger.debug("Carregando dados da tablea pais_bloco")
+    bloco = pd.read_excel('data/PAIS_BLOCO.xlsx')
+    bloco = bloco[['CO_PAIS', 'NO_BLOCO']]
+    excluded_blocos = ['América do Sul', 'União Europeia - UE']
+    bloco = bloco[bloco['NO_BLOCO'].isin(excluded_blocos)]
+    return bloco
+
+def get_exports_data():
+    logger.debug("Baixando dados de exportação")
+    start_time = time.time()
+    df = bd.read_sql(query = get_sql_query('exports'), billing_project_id = BINLLING_ID)
+    end_time = time.time()
+    logger.debug(f"Finalizado download dos dados de exportação - time: {calculateTime(end_time, start_time)}")
+    return df
+    
+def get_imports_data():
+    logger.debug("Baixando dados de importação")
+    start_time = time.time()
+    df = bd.read_sql(query = get_sql_query('imports'), billing_project_id = BINLLING_ID)
+    end_time = time.time()
+    logger.debug(f"Finalizado download dos dados de importação - time: {calculateTime(end_time, start_time)}")
+    return df
 
 def process_comex_data():
-    logger.info("Iniciando processamento dos dados do ComexStat")
-    df = merge_csv_files()
+    logger.info("Iniciando processamento dos dados do Comexstat")
+    ncm_isic = get_ncm_isic_data()
+    pais_bloco = get_pais_bloco_data()
+    exports = get_exports_data()
+    imports = get_imports_data()
     
-    
-    logger.debug(f"Agrupando dados")
-    grouped = df.groupby(['Ano', 'Mês', 'Fluxo', 'Descrição ISIC Seção'])['Valor US$ FOB'].mean().reset_index()
-    grouped = grouped.rename(columns={
-        'Valor US$ FOB': 'valor',
-        'Ano': 'ano',
-        'Mês': 'mes'
-    })
-    
-    grouped['mes'] = grouped['mes'].apply(lambda a : a.split('.')[0]) 
-    
-    grouped['data'] = pd.to_datetime(
-        grouped['ano'].astype(str) + '/' + grouped['mes'].astype(str) + '/01',
-        errors='coerce'
-    )
-    grouped = grouped.drop(['ano', 'mes'], axis=1)
-    
-    cols = ['data'] + [col for col in grouped.columns if col != 'data']
-    grouped = grouped.reindex(columns=cols)
-    
-    logger.success(f"Finalizado processamento dos dados do ComexStat com {len(grouped)} linhas")
-    return grouped
-
-
-def merge_csv_files(directory='data'):
-    # Lista todos os arquivos CSV da pasta especificada
-    csv_files = glob.glob(os.path.join(directory, '*.csv'))
-    dataframes = []
-    for file in csv_files:
-        logger.debug(f"Carregando arquivo: {os.path.basename(file)}")
-        df = pd.read_csv(file, sep=';')
-        dataframes.append(df)
-    # Concatena todos os DataFrames em um único
-    merged_df = pd.concat(dataframes, ignore_index=True)
-    logger.debug(f"Carregado {len(merged_df)} linhas")
-    return merged_df
+    return (ncm_isic, pais_bloco, exports, imports)
 
 if __name__ == "__main__":
-    data = process_comex_data()
-    data.to_excel('./data/report.xlsx', index=False, sheet_name='comexstat')
-    print(data)
+    get_logger()
+    process_comex_data()
+
