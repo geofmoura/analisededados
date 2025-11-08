@@ -1,3 +1,6 @@
+import sqlite3
+import pandas as pd
+
 sql_query = """--sql
     SELECT
         dados.ano as ano,
@@ -37,6 +40,3 @@ def get_sql_query(table: str):
     if table == 'imports':
         return sql_query.format('basedosdados.br_me_comex_stat.ncm_importacao')
     return ''
-
-    
-

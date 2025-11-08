@@ -36,9 +36,9 @@ report.to_excel('data/comexstat.xlsx', index=False, sheet_name='comexstat')
 logger.info("Salvando arquivo excel com os dados de Câmbio")
 exchange.to_excel('data/exchange.xlsx', index=False, sheet_name='excahnge')
 
+logger.info("Realizando análise de parcela de mercado por bloco econômico")
 
+connection.close()
 
 end_time = time.time()
 logger.success(f"Algoritmo Finalizado com sucesso em {calculateTime(end_time, start_time)}")
-
-
