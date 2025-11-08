@@ -20,7 +20,6 @@ def grafico_media_anual(df):
     plt.legend()
     plt.grid(True)
     plt.xticks(annual_avg.index)
-    plt.show()
 
 def grafico_periodos_crises(df):
 
@@ -53,7 +52,6 @@ def grafico_periodos_crises(df):
     plt.grid(True, alpha=0.3)
     plt.xticks(rotation=45)
     plt.tight_layout()
-    plt.show()
     
     
 def generate_exchange_plots():
@@ -63,6 +61,7 @@ def generate_exchange_plots():
     
     grafico_media_anual(df)
     grafico_periodos_crises(df)
+    plt.show()
 
 if __name__ == '__main__':
     generate_exchange_plots()
