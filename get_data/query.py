@@ -1,4 +1,3 @@
-import sqlite3
 import pandas as pd
 
 sql_query = """--sql
