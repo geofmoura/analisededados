@@ -1,10 +1,10 @@
 import sqlite3
 import time
-from src.exchange import process_exchange_data
+from exchange import process_exchange_data
 import os
-from src.comexstat import process_comex_data
-from src.utils import calculateTime, get_logger
-from src.generate_report import generate_report_df
+from comexstat import process_comex_data
+from utils import calculateTime, get_logger
+from generate_report import generate_report_df
 logger = get_logger()
 
 start_time = time.time()

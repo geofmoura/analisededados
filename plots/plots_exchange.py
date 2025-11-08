@@ -54,11 +54,15 @@ def grafico_periodos_crises(df):
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.show()
-
-if __name__ == '__main__':
+    
+    
+def generate_exchange_plots():
     df = carregar_dados()
     print(f"Total de registros: {len(df)}")
     print(f"Período dos dados: {df['data'].min()} até {df['data'].max()}")
     
     grafico_media_anual(df)
     grafico_periodos_crises(df)
+
+if __name__ == '__main__':
+    generate_exchange_plots()

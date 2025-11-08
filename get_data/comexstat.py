@@ -3,8 +3,8 @@ import basedosdados as bd
 import time
 from loguru import logger
 import pandas as pd
-from src.query import get_sql_query
-from src.utils import calculateTime, get_logger
+from query import get_sql_query
+from utils import calculateTime, get_logger
 
 BINLLING_ID = 'taskplus-397900'
 
