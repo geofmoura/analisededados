@@ -1,4 +1,5 @@
 from logging import getLevelName
+import sqlite3
 import basedosdados as bd
 import time
 from loguru import logger
@@ -48,7 +49,14 @@ def process_comex_data():
     
     return (ncm_isic, pais_bloco, exports, imports)
 
-if __name__ == "__main__":
+if __name__ == "__main__":  
     get_logger()
-    process_comex_data()
+    ncm_isic, pais_bloco, exports, imports = process_comex_data()
+    
+    connection = sqlite3.connect('data/database.db')
+
+    ncm_isic.to_sql('ncm_isic', connection, if_exists='replace', index=False)
+    pais_bloco.to_sql('pais_bloco', connection, if_exists='replace', index=False)
+    exports.to_sql('exports', connection, if_exists='replace', index=False)
+    imports.to_sql('imports', connection, if_exists='replace', index=False)
 

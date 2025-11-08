@@ -4,7 +4,6 @@ from exchange import process_exchange_data
 import os
 from comexstat import process_comex_data
 from utils import calculateTime, get_logger
-from generate_report import generate_report_df
 logger = get_logger()
 
 start_time = time.time()
@@ -28,10 +27,6 @@ ncm_isic.to_sql('ncm_isic', connection, if_exists='replace', index=False)
 pais_bloco.to_sql('pais_bloco', connection, if_exists='replace', index=False)
 exports.to_sql('exports', connection, if_exists='replace', index=False)
 imports.to_sql('imports', connection, if_exists='replace', index=False)
-
-logger.info("Salvando arquivo excel com os dados agrupados de Comex")
-report = generate_report_df(connection)
-report.to_excel('data/comexstat.xlsx', index=False, sheet_name='comexstat')
 
 logger.info("Salvando arquivo excel com os dados de Câmbio")
 exchange.to_excel('data/exchange.xlsx', index=False, sheet_name='excahnge')

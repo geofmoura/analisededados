@@ -21,8 +21,11 @@ sql_query = """--sql
     ON dados.sigla_pais_iso3 = diretorio_sigla_pais_iso3.sigla_pais_iso3
     
     WHERE
-        --dados.ano >= 2017 and dados.ano <= 2024
-        dados.ano = 2024 and dados.mes = 1
+        dados.ano >= 2017 and dados.ano <= 2024
+        --dados.ano = 2024 and dados.mes = 1
+        and dados.sigla_pais_iso3 <> 'BRA'
+        and dados.sigla_pais_iso3 <> 'ANT'
+        and dados.sigla_pais_iso3 <> ''
     GROUP BY 
         dados.ano,
         dados.mes,
