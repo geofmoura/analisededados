@@ -1,7 +1,14 @@
 import sqlite3
 import pandas as pd
 
-def generate_report_df(db_conn):
+def generate__df(db_conn, exports_top5, imports_top5, caminho_arquivo='data/relatorio_comex.xlsx'):
+    """
+    Gera um relatório Excel consolidado com todas as tabelas:
+    - Exportações completas
+    - Importações completas
+    - Top 5 Exportações
+    - Top 5 Importações
+    """
 
     query = """--sql
         SELECT 
@@ -21,12 +28,24 @@ def generate_report_df(db_conn):
     exports['fluxo'] = 'Exportação'
 
     imports = pd.read_sql_query(query.format('imports'), con=db_conn)
-    imports['fluxo'] = 'Importaçao'
+    imports['fluxo'] = 'Importação'
 
     df = pd.concat([exports, imports])
 
+    with pd.ExcelWriter(caminho_arquivo, engine='openpyxl') as writer:
+        df.to_excel(writer, sheet_name='Comex_Dados', index=False)
+        exports_top5.to_excel(writer, sheet_name='Top5_Exportacao', index=False)
+        imports_top5.to_excel(writer, sheet_name='Top5_Importacao', index=False)
+
+    print(f"Relatório salvo em: {caminho_arquivo}")
+
     return df
+
 
 if __name__ == '__main__':
     connection = sqlite3.connect('data/database.db')
-    generate_report_df(connection)
+
+    exports_top5 = pd.DataFrame()
+    imports_top5 = pd.DataFrame()
+
+    generate_report_df(connection, exports_top5, imports_top5)

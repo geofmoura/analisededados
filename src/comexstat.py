@@ -32,7 +32,7 @@ def get_exports_data():
     return df
     
 def get_imports_data():
-    logger.debug("Baixando dados de importação")
+    logger.debug("Iniciando processamento dos dados do Comexstat")
     start_time = time.time()
     df = bd.read_sql(query = get_sql_query('imports'), billing_project_id = BINLLING_ID)
     end_time = time.time()
@@ -41,14 +41,39 @@ def get_imports_data():
 
 def process_comex_data():
     logger.info("Iniciando processamento dos dados do Comexstat")
+
     ncm_isic = get_ncm_isic_data()
     pais_bloco = get_pais_bloco_data()
     exports = get_exports_data()
     imports = get_imports_data()
-    
-    return (ncm_isic, pais_bloco, exports, imports)
+
+    exports_top5 = (
+        exports.groupby(['sigla_pais_iso3', 'sigla_pais_iso3_nome'], as_index=False)['valor_fob_dolar']
+        .sum()
+        .sort_values(by='valor_fob_dolar', ascending=False)
+        .head(5)
+    )
+
+    imports_top5 = (
+        imports.groupby(['sigla_pais_iso3', 'sigla_pais_iso3_nome'], as_index=False)['valor_fob_dolar']
+        .sum()
+        .sort_values(by='valor_fob_dolar', ascending=False)
+        .head(5)
+    )
+
+    salvar_top5_excel(exports_top5, imports_top5)
+
+    return ncm_isic, pais_bloco, exports, imports, exports_top5, imports_top5
 
 if __name__ == "__main__":
     get_logger()
     process_comex_data()
 
+def get_tpo5_paises(df, fluxo):
+    logger.info(f"Calculando TOP 5 países em {fluxo.lower()}")
+    top5 = (df.groupby('CO_PAIS')['VL_FOB']
+            .sum()
+            .sort_values(ascending=False)
+            .head(5))
+    
+    return top5 
