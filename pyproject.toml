@@ -7,6 +7,7 @@ requires-python = ">=3.11"
 dependencies = [
     "basedosdados>=2.0.2",
     "loguru>=0.7.3",
+    "matplotlib>=3.10.7",
     "openpyxl>=3.1.5",
     "pandas>=2.3.3",
     "plotly>=6.3.1",
