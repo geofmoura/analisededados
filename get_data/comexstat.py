@@ -21,7 +21,7 @@ def get_pais_bloco_data():
     bloco = pd.read_excel('data/PAIS_BLOCO.xlsx')
     bloco = bloco[['CO_PAIS', 'NO_BLOCO']]
     excluded_blocos = ['América do Sul', 'União Europeia - UE']
-    bloco = bloco[bloco['NO_BLOCO'].isin(excluded_blocos)]
+    bloco = bloco[~bloco['NO_BLOCO'].isin(excluded_blocos)]
     return bloco
 
 def get_exports_data():

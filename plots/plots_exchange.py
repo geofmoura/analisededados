@@ -10,6 +10,9 @@ def carregar_dados():
 
 def grafico_media_anual(df):
     annual_avg = df.groupby(df['data'].dt.year)['valor'].mean()
+    
+    print(annual_avg)
+    
     plt.figure(figsize=(10, 6))
     plt.plot(annual_avg.index, annual_avg.values, color='blue', label='Média anual do câmbio', marker='o')
     plt.fill_between(annual_avg.index, annual_avg.values, color='skyblue', alpha=0.3)
