@@ -19,7 +19,6 @@ def processar_dados_mercado(df, fluxo='Importação'):
     """
     Processa os dados para calcular a parcela de mercado por bloco econômico
     """
-    print(df.head(200))
     df = df[df['fluxo'] == fluxo]
     mercado_blocos = df.groupby('bloco_economico')['valor_fob_dolar'].sum().reset_index()
     total = mercado_blocos['valor_fob_dolar'].sum()
@@ -47,7 +46,6 @@ def grafico_parcela_mercado_bloco(df, fluxo='Importação'):
     plt.grid(axis='y', alpha=0.3)
     plt.tight_layout()
 
-    return plt
 
 
 def analise_evolucao_temporal(df,  fluxo='Importação'):
@@ -61,13 +59,12 @@ def analise_evolucao_temporal(df,  fluxo='Importação'):
     axes = axes.flatten()
 
     for i, ano in enumerate(anos[-4:]):
-        dados = processar_dados_mercado(df, ano, fluxo)
+        dados = processar_dados_mercado(df, fluxo)
 
         axes[i].pie(dados['percentual'], labels=dados['bloco_economico'], autopct='%1.1f%%', startangle=90)
         axes[i].set_title(f'Distribuição por Bloco - {fluxo} {ano}')
 
     plt.tight_layout()
-    return plt
 
 
 def generate_bloco_economico_plots():
@@ -80,11 +77,12 @@ def generate_bloco_economico_plots():
     print(f"Anos disponíveis: {sorted(df['ano'].unique())}")
     print(f"Fluxos disponíveis: {df['fluxo'].unique()}")
 
-    plt1 = grafico_parcela_mercado_bloco(df, 'Importaçao')
-    plt1.show()
+    grafico_parcela_mercado_bloco(df, 'Importaçao')
 
-    plt2 = grafico_parcela_mercado_bloco(df, 'Exportação')
-    plt2.show()
+
+    grafico_parcela_mercado_bloco(df, 'Exportação')
+    
+    plt.show()
 
     # plt3 = analise_evolucao_temporal(df, 'Importação')
     # plt3.show()

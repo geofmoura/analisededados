@@ -24,11 +24,10 @@ def get_comexstat_data(db_conn):
     imports['fluxo'] = 'Importaçao'
 
     df = pd.concat([exports, imports])
-    print(df['bloco_economico'].unique())
+    df = df[df['bloco_economico'] != None]
     
-    df['bloco_economico'] = df['bloco_economico'].apply(lambda item: 'Outros' if item is None else item)
-    print(df['bloco_economico'].unique())
-
+    # df['bloco_economico'] = df['bloco_economico'].apply(lambda item: 'Outros' if item is None else item)
+    
     return df
 
 if __name__ == '__main__':
