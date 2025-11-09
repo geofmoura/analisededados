@@ -4,7 +4,7 @@
 
 ## 📊 Apresentação dos Resultados
 
-[![Capa dos Slides](./docs/capa.png)](./docs/relatorio.md)
+[![Capa dos Slides](./docs/capa.png)](./docs/slideapresentacao.pdf)
 
 **🎯 Clique na imagem acima para acessar o relatório completo**
 
