@@ -2,13 +2,9 @@ import sqlite3
 import pandas as pd
 import matplotlib.pyplot as plt
 from get_data.get_comexstat_data import get_comexstat_data
+from get_data.utils import format_usd_mi
 
 pd.set_option('display.max_columns', None)
-
-def format_usd_mi(valor: float) -> str:
-    valor_mi = valor / 1_000_000_000
-    valor_formatado = f"{valor_mi:,.1f}".replace(",", "X").replace(".", ",").replace("X", ".")
-    return f"$ {valor_formatado} Bi"
 
 def imports_chart(df, ax):
     imports_df = df[df['fluxo'] == 'Importaçao']
