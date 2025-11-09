@@ -24,8 +24,10 @@ def get_comexstat_data(db_conn):
     imports['fluxo'] = 'Importaçao'
 
     df = pd.concat([exports, imports])
+    print(df['bloco_economico'].unique())
     
     df['bloco_economico'] = df['bloco_economico'].apply(lambda item: 'Outros' if item is None else item)
+    print(df['bloco_economico'].unique())
 
     return df
 
@@ -34,4 +36,4 @@ if __name__ == '__main__':
     connection = sqlite3.connect('data/database.db')
     df = get_comexstat_data(connection)
     
-    print(df.head())
+    print(df.head(200))
