@@ -3,13 +3,13 @@ import matplotlib.pyplot as plt
 
 def carregar_dados():
     df = pd.read_excel('data/exchange.xlsx')
-    print("Colunas no DataFrame:", df.columns.tolist())
     df = df.sort_values(by="data")
     df['data'] = pd.to_datetime(df['data'])
     return df
 
 def grafico_media_anual(df):
     annual_avg = df.groupby(df['data'].dt.year)['valor'].mean()
+    
     plt.figure(figsize=(10, 6))
     plt.plot(annual_avg.index, annual_avg.values, color='blue', label='Média anual do câmbio', marker='o')
     plt.fill_between(annual_avg.index, annual_avg.values, color='skyblue', alpha=0.3)
